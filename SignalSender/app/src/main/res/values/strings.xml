@@ -4,4 +4,5 @@
 
     <string name="sendchar_hint">Enter a character</string>
     <string name="sendbutton_text">Send</string>
+    <string name="appstatus_title">Application Status</string>
 </resources>
