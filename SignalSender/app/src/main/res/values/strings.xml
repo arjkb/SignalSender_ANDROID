@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">SignalSender</string>
     <string name="action_settings">Settings</string>
+
+    <string name="sendchar_hint">Enter a character</string>
+    <string name="sendbutton_text">Send</string>
 </resources>
