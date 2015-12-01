@@ -22,7 +22,7 @@
             android:name=".BluetoothConnectActivity"
             android:label="@string/title_activity_bluetooth_connect"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="MainActivity" ></activity>
+            android:parentActivityName=".MainActivity"></activity>
     </application>
 
 </manifest>
