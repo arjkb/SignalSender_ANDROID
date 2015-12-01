@@ -80,8 +80,4 @@ public class BluetoothConnectActivity extends AppCompatActivity
     public void getBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
         bluetoothAdapter = this.bluetoothAdapter;
     }
-
-//    private void getPairedQuery(BluetoothAdapter ba)    {
-//        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, );
-//    }
 }
