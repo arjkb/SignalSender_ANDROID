@@ -1,5 +1,6 @@
 package com.example.classiclogic.signalsender;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         switch(id) {
             case R.id.menuitem_btpair:
                 Log.v(LOGTAG, "Bluetooth Icon Clicked!");
+
+                Intent btConnectIntent = new Intent(this, BluetoothConnectActivity.class);
+                startActivity(btConnectIntent);
                 return true;
 
             case R.id.action_settings:
