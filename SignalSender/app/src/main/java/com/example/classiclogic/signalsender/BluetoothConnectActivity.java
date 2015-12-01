@@ -1,5 +1,7 @@
 package com.example.classiclogic.signalsender;
 
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,8 @@ import android.view.View;
 public class BluetoothConnectActivity extends AppCompatActivity {
 
     public final String LOGTAG = "SIG_SENDER";
+
+    private final int REQUEST_ENABLE_BT = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,30 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
         // get support action bar corresponding to the toolbar, and enable the Up button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /* set up bluetooth */
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(bluetoothAdapter == null) {
+            Log.v(LOGTAG, "This device does not support bluetooth");
+        } else  {
+            if(!bluetoothAdapter.isEnabled()) {
+                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if( requestCode == REQUEST_ENABLE_BT )  {
+            if( resultCode == RESULT_OK )   {
+                Log.v(LOGTAG, "Bluetooth Enable Success");
+            } else if( resultCode == RESULT_CANCELED )  {
+                Log.v(LOGTAG, "Bluetooth Enable Failed");
+            }
+        }
     }
 
     @Override
