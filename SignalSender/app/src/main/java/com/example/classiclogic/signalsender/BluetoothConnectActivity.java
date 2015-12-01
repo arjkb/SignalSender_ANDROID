@@ -18,6 +18,8 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
     private final int REQUEST_ENABLE_BT = 1;
 
+    private BluetoothAdapter bluetoothAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class BluetoothConnectActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /* set up bluetooth */
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if(bluetoothAdapter == null) {
             Log.v(LOGTAG, "This device does not support bluetooth");
         } else  {
