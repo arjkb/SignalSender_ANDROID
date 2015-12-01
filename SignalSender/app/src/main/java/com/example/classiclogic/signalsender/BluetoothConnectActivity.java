@@ -1,5 +1,6 @@
 package com.example.classiclogic.signalsender;
 
+import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +12,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
-public class BluetoothConnectActivity extends AppCompatActivity {
+public class BluetoothConnectActivity extends AppCompatActivity
+        implements BluetoothConnectActivityFragment.CommunicationInterface {
 
     public final String LOGTAG = "SIG_SENDER";
 
     private final int REQUEST_ENABLE_BT = 1;
 
     private BluetoothAdapter bluetoothAdapter;
+    private BluetoothConnectActivityFragment btConnActivityFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class BluetoothConnectActivity extends AppCompatActivity {
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             }
         }
+
     }
 
     @Override
@@ -70,4 +75,13 @@ public class BluetoothConnectActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void getBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
+        bluetoothAdapter = this.bluetoothAdapter;
+    }
+
+//    private void getPairedQuery(BluetoothAdapter ba)    {
+//        ArrayAdapter<String> mArrayAdapter = new ArrayAdapter<String>(this, );
+//    }
 }
