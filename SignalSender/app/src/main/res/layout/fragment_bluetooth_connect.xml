@@ -10,12 +10,10 @@
     tools:showIn="@layout/activity_bluetooth_connect">
 
 
-    <TextView
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="BluetoothConnectFragment"
-        android:id="@+id/textView3"
-        android:layout_centerVertical="true"
+        android:id="@+id/listView"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
