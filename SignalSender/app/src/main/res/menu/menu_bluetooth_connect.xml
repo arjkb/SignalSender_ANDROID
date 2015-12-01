@@ -1,15 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.classiclogic.signalsender.MainActivity">
-
-    <item
-        android:id="@+id/menuitem_btpair"
-        android:icon="@drawable/ic_btpairicon"
-        android:title="BluetoothConnect"
-        app:showAsAction="ifRoom"
-    />
-
+    tools:context="com.example.classiclogic.signalsender.BluetoothConnectActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

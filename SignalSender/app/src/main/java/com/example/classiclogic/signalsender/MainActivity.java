@@ -5,11 +5,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    public final String LOGTAG = "SIG_SENDER";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +47,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        switch(id) {
+            case R.id.menuitem_btpair:
+                Log.v(LOGTAG, "Bluetooth Icon Clicked!");
+                return true;
+
+            case R.id.action_settings:
+                return true;
+
+            default:
+                // The user's action was not recognized. Calling superclass method.
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }
