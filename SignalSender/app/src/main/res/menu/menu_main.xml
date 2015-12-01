@@ -4,6 +4,7 @@
     tools:context="com.example.classiclogic.signalsender.MainActivity">
 
     <item
+        android:id="@+id/icon_btpair"
         android:icon="@drawable/ic_btpairicon"
         android:title="BluetoothConnect"
         app:showAsAction="ifRoom"
