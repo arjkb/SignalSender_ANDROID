@@ -77,7 +77,7 @@ public class BluetoothConnectActivity extends AppCompatActivity
     }
 
     @Override // Overrides method from the CommunicationInterface
-    public void getBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
-        bluetoothAdapter = this.bluetoothAdapter;
+    public BluetoothAdapter getBluetoothAdapter() {
+        return this.bluetoothAdapter;
     }
 }

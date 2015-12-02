@@ -25,7 +25,8 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
     CommunicationInterface communicationCallback;
 
-    BluetoothAdapter bluetoothAdapter;
+    BluetoothAdapter bluetoothAdapter = null;
+
     ListView bondedList;
 
     public BluetoothConnectActivityFragment() {
@@ -35,25 +36,32 @@ public class BluetoothConnectActivityFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Activity activity = getActivity();
+/*        Activity activity = getActivity();
 
         try {
             communicationCallback = (CommunicationInterface) getActivity();
-            communicationCallback.getBluetoothAdapter(bluetoothAdapter);
-            Log.v(LOGTAG, " Got bluetooth adapter from " + activity.toString());
+            //bluetoothAdapter = communicationCallback.getBluetoothAdapter();
+
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if( bluetoothAdapter != null )  {
+                Log.v(LOGTAG, " Got bluetooth adapter from " + activity.toString());
+            } else  {
+                Log.v(LOGTAG, " Received bluetoothAdapter is null");
+            }
+
         } catch (ClassCastException E)  {
             Log.v(LOGTAG, " ClassCastException: " + activity.toString());
             throw new ClassCastException(activity.toString()
                     + " must implement CommunicationInterface");
-        }
+        }*/
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        bondedList = (ListView) getActivity().findViewById(R.id.listView_btdevices);
-        bondedList.setAdapter(getPairedDevicesArrayAdapter(bluetoothAdapter));
+/*        bondedList = (ListView) getActivity().findViewById(R.id.listView_btdevices);
+        bondedList.setAdapter(getPairedDevicesArrayAdapter(bluetoothAdapter));*/
     }
 
     @Override
@@ -64,12 +72,29 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
 
     public interface CommunicationInterface {
-        void getBluetoothAdapter(BluetoothAdapter bluetoothAdapter);
+        BluetoothAdapter getBluetoothAdapter();
     }
 
     private ArrayAdapter<BluetoothDevice> getPairedDevicesArrayAdapter(BluetoothAdapter btAdapter)  {
         ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(getContext(), R.layout.content_bluetooth_connect);
-        Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
+
+        Set<BluetoothDevice> pairedDevices = null;
+        try {
+            if( btAdapter != null ) {
+                //pairedDevices = btAdapter.getBondedDevices();
+            } else  {
+                Log.v(LOGTAG, " btAdapter is null");
+            }
+
+        } catch (NullPointerException E)    {
+            Log.v(LOGTAG, "NullPointerException " + E.toString());
+        } catch (Exception E)   {
+            Log.v(LOGTAG, "Exception " + E.toString());
+        }
+
+        if( pairedDevices == null ) {
+            Log.v(LOGTAG, " pairedDevices is null! ");
+        }
 
         for(BluetoothDevice device: pairedDevices)  {
             mArrayAdapter.add(device);
