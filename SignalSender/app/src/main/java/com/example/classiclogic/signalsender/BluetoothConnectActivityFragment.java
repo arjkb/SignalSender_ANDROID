@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.Set;
 
@@ -64,12 +65,13 @@ public class BluetoothConnectActivityFragment extends Fragment {
     }
 
     private ArrayAdapter<BluetoothDevice> getPairedDevices(BluetoothAdapter btAdapter)  {
-        ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(this, )
+        ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(getContext(), R.layout.content_bluetooth_connect);
         Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
 
         for(BluetoothDevice device: pairedDevices)  {
-
+            mArrayAdapter.add(device);
         }
 
+        return mArrayAdapter;
     }
 }
