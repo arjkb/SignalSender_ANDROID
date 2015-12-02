@@ -114,3 +114,19 @@ public class BluetoothConnectActivityFragment extends Fragment {
         return mArrayAdapter;
     }
 }
+
+class DeviceListeArrayAdapter extends ArrayAdapter<BluetoothDevice> {
+    DeviceListeArrayAdapter(Context context, int resource)  {
+        super(context, resource);
+    }
+
+    @Override
+    public void add(BluetoothDevice object) {
+        super.add(object);
+    }
+
+    @Override
+    public String toString() {
+        return "";
+    }
+}
