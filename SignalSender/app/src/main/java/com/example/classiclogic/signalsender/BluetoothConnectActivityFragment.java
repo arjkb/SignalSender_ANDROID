@@ -64,7 +64,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
         void getBluetoothAdapter(BluetoothAdapter bluetoothAdapter);
     }
 
-    private ArrayAdapter<BluetoothDevice> getPairedDevices(BluetoothAdapter btAdapter)  {
+    private ArrayAdapter<BluetoothDevice> getPairedDevicesArrayAdapter(BluetoothAdapter btAdapter)  {
         ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(getContext(), R.layout.content_bluetooth_connect);
         Set<BluetoothDevice> pairedDevices = btAdapter.getBondedDevices();
 
