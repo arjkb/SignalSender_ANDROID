@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -22,9 +23,10 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
     public final String LOGTAG = "SIG_SENDER";
 
-    BluetoothAdapter bluetoothAdapter;
-
     CommunicationInterface communicationCallback;
+
+    BluetoothAdapter bluetoothAdapter;
+    ListView bondedList;
 
     public BluetoothConnectActivityFragment() {
     }
@@ -50,7 +52,8 @@ public class BluetoothConnectActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        bondedList = (ListView) getActivity().findViewById(R.id.listView_btdevices);
+        bondedList.setAdapter(getPairedDevicesArrayAdapter(bluetoothAdapter));
     }
 
     @Override
