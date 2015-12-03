@@ -130,9 +130,9 @@ public class BluetoothConnectActivityFragment extends Fragment {
     }
 }
 
-private class ConnectThread  extends Thread {
+class ConnectThread  extends Thread {
 
-    private final BluetoothDevice connectedDevice;
+  //  private final BluetoothDevice mDevice;
     private final BluetoothSocket mSocket;
     private final BluetoothAdapter bluetoothAdapter;
 
@@ -145,15 +145,16 @@ private class ConnectThread  extends Thread {
         MY_UUID = UUID.fromString("406b2483-c8c6-4585-8cf1-062d6a7b8ac9");
 
         this.bluetoothAdapter = bluetoothAdapter;
-        this.connectedDevice = device;
+        // this.mDevice = device;
         BluetoothSocket tempSocket = null;
 
         try {
             tempSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+            Log.v(LOGTAG, " ConnectThread: Socket established with remote device!");
         } catch (IOException E) {
-            Log.v(LOGTAG, " IOException while creating RfComm Socket " + E);
+            Log.v(LOGTAG, " ConnectThread: IOException while creating RfComm Socket " + E);
         } catch (Exception E) {
-            Log.v(LOGTAG, " " + E);
+            Log.v(LOGTAG, " ConnectThread: Exception " + E);
         }
 
         mSocket = tempSocket;
@@ -168,16 +169,16 @@ private class ConnectThread  extends Thread {
             // connect the device through the socket
             // Blocking call
             mSocket.connect();
-        } catch (IOException E) {
+            Log.v(LOGTAG, " ConnectThread: Statement after connect()");
+        } catch (IOException IE) {
             // unable to connect. Close the socket and get out.
             try {
                 mSocket.close();
             } catch (Exception E) {
-                Log.v(LOGTAG, " Cannot close socket! " + E);
+                Log.v(LOGTAG, " ConnectThread: Cannot close socket! " + E);
             }
             return;
         }
-
     }
 }
 
