@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -27,6 +28,8 @@ public class BluetoothConnectActivityFragment extends Fragment {
     CommunicationInterface communicationCallback;
 
     BluetoothAdapter bluetoothAdapter = null;
+    BluetoothDevice clickedDevice = null;
+
 
     ListView bondedList;
     Activity activity;
@@ -77,6 +80,15 @@ public class BluetoothConnectActivityFragment extends Fragment {
             Log.v(LOGTAG, " bondedList is not null");
         }
         bondedList.setAdapter((ListAdapter) getPairedDevicesArrayAdapter(bluetoothAdapter));
+
+        bondedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                clickedDevice = (BluetoothDevice) bondedList.getItemAtPosition(position);
+
+                Log.v(LOGTAG, " Clicked Device " + clickedDevice);
+            }
+        });
 
         return view;
     }
