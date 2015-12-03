@@ -93,6 +93,10 @@ public class BluetoothConnectActivityFragment extends Fragment {
                 clickedDevice = (BluetoothDevice) bondedItemsListView.getItemAtPosition(position);
 
                 Log.v(LOGTAG, " Clicked Device " + clickedDevice.getName() + " " + clickedDevice.getAddress());
+                new ConnectThread(clickedDevice, bluetoothAdapter);
+
+          //
+          //      getActivity().finish();
             }
         });
 
