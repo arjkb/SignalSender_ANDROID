@@ -17,7 +17,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,7 +33,8 @@ public class BluetoothConnectActivityFragment extends Fragment {
     BluetoothDevice clickedDevice = null;
 
 
-    ListView bondedList;
+    ListView bondedItemsListView;
+    ListAdapter pairedDevicesArrayAdapter;
     Activity activity;
 
     public BluetoothConnectActivityFragment() {
@@ -76,24 +76,31 @@ public class BluetoothConnectActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_bluetooth_connect, container, false);
 
 
-        bondedList = (ListView) view.findViewById(R.id.mylist_btdevices);
-        if( bondedList == null )    {
-            Log.v(LOGTAG, " bondedList is null");
+        bondedItemsListView = (ListView) view.findViewById(R.id.mylist_btdevices);
+        if( bondedItemsListView == null )    {
+            Log.v(LOGTAG, " bondedItemsListView is null");
         } else  {
-            Log.v(LOGTAG, " bondedList is not null");
+            Log.v(LOGTAG, " bondedItemsListView is not null");
         }
-        bondedList.setAdapter((ListAdapter) getPairedDevicesArrayAdapter(bluetoothAdapter));
+        bondedItemsListView.setAdapter((ListAdapter) getPairedDevicesArrayAdapter(bluetoothAdapter));
 
-        bondedList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bondedItemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                clickedDevice = (BluetoothDevice) bondedList.getItemAtPosition(position);
+                clickedDevice = (BluetoothDevice) bondedItemsListView.getItemAtPosition(position);
 
                 Log.v(LOGTAG, " Clicked Device " + clickedDevice);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        bluetoothAdapter.
     }
 
     public interface CommunicationInterface {
