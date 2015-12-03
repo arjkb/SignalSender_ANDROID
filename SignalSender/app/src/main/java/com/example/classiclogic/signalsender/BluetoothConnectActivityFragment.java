@@ -34,7 +34,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
 
     ListView bondedItemsListView;
-    ListAdapter pairedDevicesArrayAdapter;
+    ArrayAdapter pairedDevicesArrayAdapter;
     Activity activity;
 
     public BluetoothConnectActivityFragment() {
@@ -51,6 +51,8 @@ public class BluetoothConnectActivityFragment extends Fragment {
             //bluetoothAdapter = communicationCallback.getBluetoothAdapter();
 
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            pairedDevicesArrayAdapter = getPairedDevicesArrayAdapter(bluetoothAdapter);
+
             if( bluetoothAdapter != null )  {
                 Log.v(LOGTAG, " Got bluetooth adapter from " + activity.toString());
             } else  {
@@ -82,14 +84,15 @@ public class BluetoothConnectActivityFragment extends Fragment {
         } else  {
             Log.v(LOGTAG, " bondedItemsListView is not null");
         }
-        bondedItemsListView.setAdapter((ListAdapter) getPairedDevicesArrayAdapter(bluetoothAdapter));
+
+        bondedItemsListView.setAdapter((ListAdapter) pairedDevicesArrayAdapter);
 
         bondedItemsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 clickedDevice = (BluetoothDevice) bondedItemsListView.getItemAtPosition(position);
 
-                Log.v(LOGTAG, " Clicked Device " + clickedDevice);
+                Log.v(LOGTAG, " Clicked Device " + clickedDevice.getName() + " " + clickedDevice.getAddress());
             }
         });
 
@@ -99,8 +102,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
-        bluetoothAdapter.
+        pairedDevicesArrayAdapter.notifyDataSetChanged();
     }
 
     public interface CommunicationInterface {
@@ -176,7 +178,7 @@ class ConnectThread  extends Thread {
             // connect the device through the socket
             // Blocking call
             mSocket.connect();
-            Log.v(LOGTAG, " ConnectThread: Statement after connect()");
+
         } catch (IOException IE) {
             // unable to connect. Close the socket and get out.
             try {
@@ -186,6 +188,9 @@ class ConnectThread  extends Thread {
             }
             return;
         }
+
+        // Do work to manage the connection (in a separate thread)
+        Log.v(LOGTAG, " ConnectThread: Statement after connect()");
     }
 }
 
