@@ -3,6 +3,7 @@ package com.example.classiclogic.signalsender;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -15,8 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -124,6 +127,57 @@ public class BluetoothConnectActivityFragment extends Fragment {
         }
 
         return mArrayAdapter;
+    }
+}
+
+private class ConnectThread  extends Thread {
+
+    private final BluetoothDevice connectedDevice;
+    private final BluetoothSocket mSocket;
+    private final BluetoothAdapter bluetoothAdapter;
+
+    public final String LOGTAG = "SIG_SENDER";
+
+    private UUID MY_UUID;
+
+    public ConnectThread(BluetoothDevice device, BluetoothAdapter bluetoothAdapter)    {
+
+        MY_UUID = UUID.fromString("406b2483-c8c6-4585-8cf1-062d6a7b8ac9");
+
+        this.bluetoothAdapter = bluetoothAdapter;
+        this.connectedDevice = device;
+        BluetoothSocket tempSocket = null;
+
+        try {
+            tempSocket = device.createRfcommSocketToServiceRecord(MY_UUID);
+        } catch (IOException E) {
+            Log.v(LOGTAG, " IOException while creating RfComm Socket " + E);
+        } catch (Exception E) {
+            Log.v(LOGTAG, " " + E);
+        }
+
+        mSocket = tempSocket;
+    }
+
+    @Override
+    public void run() {
+        //super.run();
+        bluetoothAdapter.cancelDiscovery();
+
+        try {
+            // connect the device through the socket
+            // Blocking call
+            mSocket.connect();
+        } catch (IOException E) {
+            // unable to connect. Close the socket and get out.
+            try {
+                mSocket.close();
+            } catch (Exception E) {
+                Log.v(LOGTAG, " Cannot close socket! " + E);
+            }
+            return;
+        }
+
     }
 }
 
