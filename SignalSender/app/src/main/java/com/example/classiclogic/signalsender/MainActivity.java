@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
-        implements BluetoothConnectActivityFragment.MainActivityCommInterface {
+        implements BluetoothConnectActivity.MainActivityCommInterface {
 
     public final String LOGTAG = "SIG_SENDER";
 
@@ -90,12 +90,17 @@ public class MainActivity extends AppCompatActivity
             default:
                 // The user's action was not recognized. Calling superclass method.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     @Override
     public void sendConnectedThread(ConnectedThread connectedThread) {
+        Log.v(LOGTAG, "sendConnectedThreead: Called!");
         this.connectedThread = connectedThread;
+        if( this.connectedThread == null)   {
+            Log.v(LOGTAG, "sendConnectedThreead: NULL");
+        } else  {
+            Log.v(LOGTAG, "sendConnectedThreead: NOT NULL");
+        }
     }
 }

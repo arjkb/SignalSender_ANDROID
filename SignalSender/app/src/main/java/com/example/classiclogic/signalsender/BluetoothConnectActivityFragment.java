@@ -30,7 +30,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
     public final String LOGTAG = "SIG_SENDER";
 
     CommunicationInterface communicationCallback;
-
+//    MainActivityCommInterface mainActivityCallback;
     BluetoothAdapter bluetoothAdapter = null;
     BluetoothDevice clickedDevice = null;
 
@@ -50,6 +50,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
         try {
             communicationCallback = (CommunicationInterface) getActivity();
+
             //bluetoothAdapter = communicationCallback.getBluetoothAdapter();
 
             bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -66,6 +67,14 @@ public class BluetoothConnectActivityFragment extends Fragment {
             throw new ClassCastException(activity.toString()
                     + " must implement CommunicationInterface");
         }
+
+//        try     {
+//            mainActivityCallback = (MainActivityCommInterface) getActivity();
+//        } catch (ClassCastException E)  {
+//            Log.v(LOGTAG, " ClassCastException: " + activity.toString());
+//            throw new ClassCastException(activity.toString()
+//                    + " must implement MainActivityCommInterface");
+//        }
     }
 
     @Override
@@ -95,8 +104,10 @@ public class BluetoothConnectActivityFragment extends Fragment {
                 clickedDevice = (BluetoothDevice) bondedItemsListView.getItemAtPosition(position);
 
                 Log.v(LOGTAG, " Clicked Device " + clickedDevice.getName() + " " + clickedDevice.getAddress());
-                new ConnectThread(clickedDevice, bluetoothAdapter).start();
 
+                ConnectThread connectThread = new ConnectThread(clickedDevice, bluetoothAdapter);
+           //     connectThread.start();
+                communicationCallback.sendConnectedThreadToMain(new ConnectedThread(connectThread.getSocket()));
           //
           //      getActivity().finish();
             }
@@ -113,11 +124,10 @@ public class BluetoothConnectActivityFragment extends Fragment {
 
     public interface CommunicationInterface {
         BluetoothAdapter getBluetoothAdapter();
+        void sendConnectedThreadToMain(ConnectedThread connectedThread);
     }
 
-    public interface MainActivityCommInterface  {
-        public void sendConnectedThread(ConnectedThread connectedThread);
-    }
+
 
     private ArrayAdapter<BluetoothDevice> getPairedDevicesArrayAdapter(BluetoothAdapter btAdapter)  {
         ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(getContext(), android.R.layout.simple_list_item_1);
@@ -177,6 +187,10 @@ class ConnectThread  extends Thread {
         }
 
         mSocket = tempSocket;
+    }
+
+    public BluetoothSocket getSocket()  {
+        return mSocket;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.classiclogic.signalsender;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import android.widget.ArrayAdapter;
 public class BluetoothConnectActivity extends AppCompatActivity
         implements BluetoothConnectActivityFragment.CommunicationInterface {
 
+    Activity activity;
+
     public final String LOGTAG = "SIG_SENDER";
 
     private final int REQUEST_ENABLE_BT = 1;
@@ -24,9 +27,14 @@ public class BluetoothConnectActivity extends AppCompatActivity
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothConnectActivityFragment btConnActivityFragment;
 
+    MainActivityCommInterface mainActivityCallback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_bluetooth_connect);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,6 +62,15 @@ public class BluetoothConnectActivity extends AppCompatActivity
             }
         }
 
+        activity = getParent();
+
+        try     {
+            mainActivityCallback = (MainActivityCommInterface) getParent();
+        } catch (ClassCastException E)  {
+            Log.v(LOGTAG, " ClassCastException: " + activity.toString());
+            throw new ClassCastException(activity.toString()
+                    + " must implement MainActivityCommInterface");
+        }
     }
 
     @Override
@@ -79,5 +96,14 @@ public class BluetoothConnectActivity extends AppCompatActivity
     @Override // Overrides method from the CommunicationInterface
     public BluetoothAdapter getBluetoothAdapter() {
         return this.bluetoothAdapter;
+    }
+
+    @Override
+    public void sendConnectedThreadToMain(ConnectedThread connectedThread) {
+        mainActivityCallback.sendConnectedThread(connectedThread);
+    }
+
+    public interface MainActivityCommInterface  {
+        void sendConnectedThread(ConnectedThread connectedThread);
     }
 }
