@@ -17,6 +17,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Set;
 import java.util.UUID;
 
@@ -93,7 +95,7 @@ public class BluetoothConnectActivityFragment extends Fragment {
                 clickedDevice = (BluetoothDevice) bondedItemsListView.getItemAtPosition(position);
 
                 Log.v(LOGTAG, " Clicked Device " + clickedDevice.getName() + " " + clickedDevice.getAddress());
-                new ConnectThread(clickedDevice, bluetoothAdapter);
+                new ConnectThread(clickedDevice, bluetoothAdapter).start();
 
           //
           //      getActivity().finish();
@@ -195,6 +197,47 @@ class ConnectThread  extends Thread {
 
         // Do work to manage the connection (in a separate thread)
         Log.v(LOGTAG, " ConnectThread: Statement after connect()");
+    }
+}
+
+class ConnectedThread {
+    public final String LOGTAG = "SIG_SENDER";
+
+    private final BluetoothSocket bluetoothSocket;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
+
+    public ConnectedThread(BluetoothSocket socket)    {
+        this.bluetoothSocket = socket;
+
+        InputStream tempIn = null;
+        OutputStream tempOut = null;
+
+        try {
+            tempIn = bluetoothSocket.getInputStream();
+            tempOut = bluetoothSocket.getOutputStream();
+        } catch (Exception E)   {
+            Log.v(LOGTAG, " ConnectedThread: Exception occurred while getting input/output streams " + E.toString());
+        }
+
+        inputStream = tempIn;
+        outputStream = tempOut;
+    }
+
+    public void write(byte []bytes) {
+        try {
+            outputStream.write(bytes);
+        } catch (Exception E)   {
+            Log.v(LOGTAG, " ConnectedThread: Error writing out to output stream " + E.toString());
+        }
+    }
+
+    public void cancel()    {
+        try {
+            bluetoothSocket.close();
+        } catch (Exception E)   {
+            Log.v(LOGTAG, " ConnectedThread: Exception in cancel() " + E.toString());
+        }
     }
 }
 
