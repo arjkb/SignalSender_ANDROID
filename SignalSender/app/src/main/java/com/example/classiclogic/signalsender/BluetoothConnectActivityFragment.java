@@ -115,6 +115,10 @@ public class BluetoothConnectActivityFragment extends Fragment {
         BluetoothAdapter getBluetoothAdapter();
     }
 
+    public interface MainActivityCommInterface  {
+        public void sendConnectedThread(ConnectedThread connectedThread);
+    }
+
     private ArrayAdapter<BluetoothDevice> getPairedDevicesArrayAdapter(BluetoothAdapter btAdapter)  {
         ArrayAdapter<BluetoothDevice> mArrayAdapter = new ArrayAdapter<BluetoothDevice>(getContext(), android.R.layout.simple_list_item_1);
 

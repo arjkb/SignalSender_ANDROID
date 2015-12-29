@@ -12,9 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements BluetoothConnectActivityFragment.MainActivityCommInterface {
 
     public final String LOGTAG = "SIG_SENDER";
+
+    public ConnectedThread connectedThread;
 
 
     @Override
@@ -41,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.v(LOGTAG, " SENDBUTTON clicked!");
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
@@ -76,5 +85,10 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void sendConnectedThread(ConnectedThread connectedThread) {
+        this.connectedThread = connectedThread;
     }
 }
