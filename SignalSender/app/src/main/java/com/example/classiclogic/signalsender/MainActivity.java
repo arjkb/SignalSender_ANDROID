@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity
         implements BluetoothConnectActivityFragment.MainActivityCommInterface {
 
     public final String LOGTAG = "SIG_SENDER";
 
-    public ConnectedThread connectedThread;
+    public ConnectedThread connectedThread = null;
 
 
     @Override
@@ -37,11 +38,17 @@ public class MainActivity extends AppCompatActivity
         });
 
         Button sendButton = (Button) findViewById(R.id.button);
+        final EditText editText = (EditText) findViewById(R.id.editText);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Log.v(LOGTAG, " SENDBUTTON clicked!");
+                Log.v(LOGTAG, " SENDBUTTON clicked!");
+                String text = editText.getText().toString();
+
+                if( connectedThread != null)    {
+                    connectedThread.write(text.getBytes());
+                }
             }
         });
 
